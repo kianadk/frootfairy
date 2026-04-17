@@ -39,15 +39,13 @@ function Home () {
                 </ul>
             </div>
         </div>
-        <div className='grid grid-cols-2 gap-2 mx-6 mb-10'>
+        <div className='grid grid-cols-2 gap-2 mx-6 mb-10 md:mb-16 max-w-xl'>
             <img alt='Plum jam' src={plumJam} className='object-cover rounded-lg row-span-2'/>
             <img alt='Sliced quince' src={quince} className=' object-cover object-top-right rounded-l row-span-2'/>
             <img alt='Orange jam on toast' src={orangeJamToast} className='object-cover rounded-lg row-span-2' />
             <img alt='Peach jam' src={peachJam} className='object-cover object-top-right rounded-lg row-span-1 '/>
             <img alt='Plums' src={plums} className='object-cover object-top-right rounded-lg row-span-2 '/>
             <img alt='Linzer cookies' src={linzerCookies} className=' object-cover object-top-right rounded-lg row-span-1'/>
-            
-            
         </div>
     </div>
 };
