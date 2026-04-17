@@ -32,33 +32,12 @@ function NavMenu ({
                 >
                     Home
                 </NavLink></DrawerClose>
-                 <DrawerClose asChild><NavLink
-                    className="text-foreground"
-                    to="/about"
-                >
-                    About
-                </NavLink></DrawerClose>
                 <DrawerClose asChild><NavLink
                     className="text-foreground"
-                    to="/order"
+                    to='https://docs.google.com/forms/d/e/1FAIpQLSc1UxkOCuoO4MHePwFzuCwhVdT1V5Szq5xPR1Xr6-swkGyAuA/viewform'
                 >
                     Order Jams
                 </NavLink></DrawerClose>
-                </div>
-                <div className="flex flex-col gap-4">
-                    <NavLink
-                    className="text-foreground"
-                    to="/"
-                >
-                    Instagram
-                </NavLink>
-                 <NavLink
-                    className="text-foreground"
-                    to="/about"
-                >
-                    Substack
-                </NavLink>
-
                 </div>
           </DrawerContent>
         </Drawer>

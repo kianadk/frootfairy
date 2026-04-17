@@ -5,17 +5,17 @@ import { MenuIcon } from "lucide-react";
 
 
 function Header () {
-    return <div className="flex items-center text-xl text-foreground w-full text-center ">
+    return <div className="flex items-center text-xl text-foreground w-full text-center relative">
         <NavMenu
             drawerTriggerElement={
-                <Button variant="ghost" size='icon' className="px-14">
-                <MenuIcon className="size-12 mx-8"/>
-            </Button>
+                <Button variant="ghost" size='icon' className="px-14 absolute">
+                    <MenuIcon className="size-12 mx-8"/>
+                </Button>
             }
         
         />
-        <div className="flex flex-col items-center leading-none">
-            <img src={logo} className='w-40 -mb-4'/>
+        <div className="flex flex-col items-center leading-none w-full">
+            <img src={logo} className='w-40 -mb-4 md:w-60'/>
             Froot Fairy
         </div>
     </div>;
