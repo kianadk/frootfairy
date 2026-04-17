@@ -1,14 +1,19 @@
 
+import { Route, Routes } from 'react-router-dom';
 import './App.css'
-import logo from './assets/frootfairy.png';
+
+import Header from './Header';
+import Home from './Home';
 
 function App() {
 
   return (
-    <div className='flex flex-col items-center justify-center bg-background h-full' data-theme='neutral'>
-    <img src={logo} className='max-w-100'/>
-    <p className='text-foreground'>frooty things coming soon</p>
-          
+    <div className='flex flex-col items-center gap-8 bg-background h-full w-full py-4' data-theme='neutral'>
+    <Header />
+     <Routes>
+      <Route path='/' element={<Home />} />
+      <Route path='/order' element={<></>} />
+     </Routes>
     </div>
   )
 }
