@@ -36,7 +36,7 @@ function Home () {
                     <li>✨new✨ strawberry</li>
                     <li>apricot</li>
                     <li>strawberry prosecco</li>
-                    <li>valencia orange</li>
+                    <li className='line-through'>valencia orange</li>
                 </ul>
             </div>
         </div>
