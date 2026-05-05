@@ -103,6 +103,7 @@
   --background: var(--cream);
   --muted: var(--cream);
   --foreground: var(--cranberry);
+  --primary: var(--cranberry);
   --border: var(--sage);
   --radius: 8px;
   --ring: var(--sage-dark);

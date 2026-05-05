@@ -7,6 +7,7 @@ import quince from './assets/quince.jpg';
 import plumJam from './assets/plumJam.jpg';
 import orangeJamToast from './assets/orangeJamToast.jpg';
 import plums from './assets/plums.jpg';
+import { Badge } from "@/components/ui/badge"
 
 function Home () {
     return <div className='flex flex-col gap-6 items-center'>
@@ -33,9 +34,9 @@ function Home () {
             >
                 Currently available flavors (May 2026)
                 <ul className='text-lg my-4'>
-                    <li>✨new✨ strawberry</li>
+                    <li>strawberry <Badge>✨new✨</Badge></li>
                     <li>apricot</li>
-                    <li>strawberry prosecco</li>
+                    <li className='line-through'>strawberry prosecco</li>
                     <li className='line-through'>valencia orange</li>
                 </ul>
             </div>
