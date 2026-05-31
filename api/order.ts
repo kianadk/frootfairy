@@ -3,10 +3,10 @@ import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-function generateConfirmationEmail(data) {
+function generateConfirmationEmail(data: { name: string, selectedFlavors: Record<string, number>}) {
   const name = data.name;
   const selectedFlavors = data.selectedFlavors;
-  const flavorString = Object.entries(selectedFlavors).reduce((accumulator, [flavor, quantity], index) => {
+  const flavorString = Object.entries(selectedFlavors).filter(([_, quantity]) => quantity > 0).reduce((accumulator, [flavor, quantity], index) => {
     if (quantity === 0) return accumulator;
     return accumulator + `${index > 0 ? ', ': ''}${quantity} jar${quantity > 1 ? 's' : ''} of ${flavor}`
   }, '');
