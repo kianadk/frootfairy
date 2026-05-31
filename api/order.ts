@@ -19,20 +19,20 @@ export async function POST(req: Request) {
     
       const url = await put(
         `orders/${name}.txt`,
-        JSON.stringify(req.body), 
+        JSON.stringify(resBody), 
         { access: 'private', addRandomSuffix: true, contentType: 'application/json', token: process.env.BLOB_READ_WRITE_TOKEN }
       );
       const { data, error } = await resend.batch.send([{
         from: 'kiana joon <kiana.joon@frootfairy.com>',
         to: [resBody.email],
         subject: 'frooty greetings',
-        html: `<div>${generateConfirmationEmail(req.body)}</div>`,
+        html: `<div>${generateConfirmationEmail(resBody)}</div>`,
       },
       {
         from: 'kiana joon <kiana.joon@frootfairy.com>',
         to: ['kianadkavoosi@gmail.com'],
         subject: 'you got a froot fairy order',
-        html: `<div>Here is the order <br/> ${generateConfirmationEmail(req.body)}</div>`,
+        html: `<div>Here is the order <br/> ${generateConfirmationEmail(resBody)}</div>`,
       }]);
     
       if (error) {
