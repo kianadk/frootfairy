@@ -12,6 +12,10 @@ export default defineConfig({
     tsConfigPaths(),
   ],
   server: {
+    cors: {
+      // the origin you will be accessing via browser
+      origin: 'https://www.frootfairy.com',
+    },
     open: true, // automatically open the app in the browser
     port: 5173,
     proxy: {
@@ -30,5 +34,10 @@ export default defineConfig({
   },
   build: {
     outDir: 'build',
+    manifest: true,
+    // rollupOptions: {
+    //   // overwrite default .html entry
+    //   input: '/api/server.js',
+    // },
   },
 });
