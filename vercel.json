@@ -6,6 +6,17 @@
       "source": "/(.*)",
       "destination": "/index.html"
     },
-    { "source": "/api/(.*)", "destination": "/api/server.js" }
+    { "source": "/api/(.*)", "destination": "/api/server.js" }],
+    "builds": [
+    {
+      "src": "api/server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "api/server.js"
+    }
   ]
 }
