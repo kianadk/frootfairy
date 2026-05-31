@@ -14,10 +14,10 @@ function Header () {
             }
         
         />
-        <div className="flex flex-col items-center leading-none w-full">
+        <a href='/' className="flex flex-col items-center leading-none w-full">
             <img src={logo} className='w-40 -mb-4 md:w-60'/>
             Froot Fairy
-        </div>
+        </a>
     </div>;
 };
 
