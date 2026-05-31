@@ -1,14 +1,56 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const { put } = require('@vercel/blob');
+const { Resend } = require('resend');
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 // Serve the static files from the React app's build directory
 app.use(express.static(path.join(__dirname, 'build'), { redirect: false }));
 
+// parse json bodies
+app.use(express.json()); 
+
+function generateConfirmationEmail(data) {
+  const name = data.name;
+  const selectedFlavors = data.selectedFlavors;
+  const flavorString = Object.entries(selectedFlavors).reduce((accumulator, [flavor, quantity], index) => {
+    if (quantity === 0) return accumulator;
+    return accumulator + `${index > 0 ? ', ': ''}${quantity} jar${quantity > 1 ? 's' : ''} of ${flavor}`
+  }, '');
+  return `hello ${name},<br /><br /> thanks for placing a froot fairy order! we'll be reaching out to you shortly to confirm details. contact kiana.joon@frootfairy.com if you need anything in the meantime<br/><br/> your order: ${flavorString}`
+};
+
 // API routes
-app.get('/api/data', (req, res) => {
-  res.json({ message: 'Hello from the API!' });
+app.post('/api/order', async (req, res) => {
+  const name = req.body.name || 'order';
+
+  const url = await put(
+    `orders/${name}.txt`,
+    JSON.stringify(req.body), 
+    { access: 'private', addRandomSuffix: true, contentType: 'application/json', token: process.env.BLOB_READ_WRITE_TOKEN }
+  );
+  const { data, error } = await resend.batch.send([{
+    from: 'kiana joon <kiana.joon@frootfairy.com>',
+    to: [req.body.email],
+    subject: 'frooty greetings',
+    html: `<div>${generateConfirmationEmail(req.body)}</div>`,
+  },
+  {
+    from: 'kiana joon <kiana.joon@frootfairy.com>',
+    to: ['kianadkavoosi@gmail.com'],
+    subject: 'you got a froot fairy order',
+    html: `<div>Here is the order <br/> ${generateConfirmationEmail(req.body)}</div>`,
+  }]);
+
+  if (error) {
+    return console.error({ error });
+  }
+  res.json({ url, data });
 });
 
 // SPA fallback: Any request that doesn't match an API route will send the index.html file

@@ -4,6 +4,7 @@ import './App.css'
 
 import Header from './Header';
 import Home from './Home';
+import Order from './order/Order';
 
 function App() {
 
@@ -12,6 +13,7 @@ function App() {
     <Header />
      <Routes>
       <Route path='/' element={<Home />} />
+      <Route path='/order' element={<Order />} />
      </Routes>
     </div>
   )

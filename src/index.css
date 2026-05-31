@@ -20,6 +20,7 @@
   --sand: #eec492;
   --butter: #F2D680;
   --cranberry: #87123A;
+  --plum: #772240;
 
 
   --background:	var(--cream);
@@ -109,7 +110,7 @@
   --ring: var(--sage-dark);
   --sans: 'lemon';
   --accent: var(--butter);
-  --muted-foreground: var(--kiwi)
+  --muted-foreground: var(--plum)
 }
 
 /* .dark {

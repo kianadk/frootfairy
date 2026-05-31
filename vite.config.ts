@@ -13,7 +13,15 @@ export default defineConfig({
   ],
   server: {
     open: true, // automatically open the app in the browser
-    port: 3000,
+    port: 5173,
+    proxy: {
+      // Matches any request starting with /api
+      '/api': {
+        target: 'http://localhost:3000', // Your backend Node.js server address
+        changeOrigin: true,
+        secure: false,
+      }
+    }
   },
   resolve: {
     alias: {

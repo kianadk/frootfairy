@@ -16,7 +16,7 @@ function Home () {
                 <p className='text-sm'>Fruit preserves made as a meditation on Persian culinary tradition, the cultural melting pot of Los Angeles, and the seasons of Tovaangar</p>
         </div>
         <Link
-                to='https://docs.google.com/forms/d/e/1FAIpQLSc1UxkOCuoO4MHePwFzuCwhVdT1V5Szq5xPR1Xr6-swkGyAuA/viewform'
+                to='/order'
                 className='text-2xl mx-6 p-2 w-3/4 border-2 border-foreground rounded-lg shadow-md/20 shadow-foreground text-center'
             >
                 Order jams
