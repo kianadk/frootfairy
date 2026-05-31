@@ -4,7 +4,7 @@ import './App.css'
 
 import Header from './Header';
 import Home from './Home';
-import Order from './Order';
+import Order from './order/Order';
 
 function App() {
 

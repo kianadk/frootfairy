@@ -9,21 +9,23 @@ import {
   FieldSet,
 } from "@/components/ui/field"
 import { useState } from "react";
-import { Button } from "./components/ui/button";
-import { SelectContent, Select, SelectTrigger, SelectItem, SelectValue, SelectGroup } from "./components/ui/select";
+import { Button } from "../components/ui/button";
+import { SelectContent, Select, SelectTrigger, SelectItem, SelectValue, SelectGroup } from "../components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import * as _ from "lodash";
-import { Label } from "./components/ui/label";
-import { Input } from "./components/ui/input";
-import { Textarea } from "./components/ui/textarea";
+import { Label } from "../components/ui/label";
+import { Input } from "../components/ui/input";
+import { Textarea } from "../components/ui/textarea";
+import OrderSummary from "./OrderSummary";
+import { Spinner } from "@/components/ui/spinner";
 
 type Flavor = 'apricot' | 'strawberry';
 const FLAVOR_STOCK: Record<Flavor, number> = {
-    apricot: 3,
-    strawberry: 14
+    apricot: 6,
+    strawberry: 6
 } as const;
 const FLAVOR_OPTIONS = Object.keys(FLAVOR_STOCK) as (Flavor)[];
-type PAGE_NAMES = 'flavors' | 'quantities' | 'reception' | 'contact' | 'review';
+type PAGE_NAMES = 'flavors' | 'quantities' | 'reception' | 'contact' | 'review' | 'confirmation';
 
 function Order() {
     const [currentPage, setCurrentPage] = useState<PAGE_NAMES>('flavors')
@@ -39,6 +41,7 @@ function Order() {
     const [email, setEmail] = useState('');
     const [address, setAddress] = useState('');
     const [preferredCommunication, setPreferredCommunication] = useState('');
+    const [isSubmitPending, setIsSubmitPending] = useState(false);
 
     const numFlavors = FLAVOR_OPTIONS.reduce((acc, flavor) => {
         return acc + selectedFlavors[flavor]
@@ -237,40 +240,66 @@ function Order() {
         }
 
         {
-            currentPage === 'review' && <div className="flex flex-col gap-4">
+            currentPage === 'review' && <>
             <div className="text-xl">Review your order</div>
-            <div className="flex gap-16">
-                <ul>
-                    {Object.entries(selectedFlavors).filter(([_, quantity]) => !!quantity).map(([flavor, quantity]) => {
-                        return <li>{`${quantity} ${flavor}`}</li>
-                    })}
-                </ul>
-                <ul>
-                    {prices.map(([lower, higher]) => {
-                        return <li>{`$${lower}-${higher}`}</li>
-                    })}
-                </ul>
-            </div>
-            <div className="flex gap-16 justify-between">
-                {receptionMethod}
-                <div>
-                    {receptionMethod === 'delivery' && '$5'}
-                    {receptionMethod === 'shipping' && '$10'}
-                    {receptionMethod === 'pickup' && '$0'}
-                </div>
-            </div>
-            <hr />
-            <div className="flex gap-16 justify-between">
-                <div>Total</div>
-                <div>
-                    {`$${lowerJamCost + receptionCost}-${upperJamCost + receptionCost}`}
-                </div>
-            </div>
+            <div className="text-m px-8">Your order will be submitted for review. We will be in touch to confirm and collect payment.</div>
+            <OrderSummary
+                name={name}
+                phone={phone}
+                email={email}
+                address={address}
+                preferredCommunication={preferredCommunication}
+                receptionMethod={receptionMethod}
+                selectedFlavors={selectedFlavors}
+            />
             <div className="flex flex-row gap-2">
                 <Button onClick={() => setCurrentPage('contact')} className="grow-1">Back</Button>
-                <Button onClick={() => {}} className="grow-1">Place order</Button>
+                <Button
+                    onClick={async () => {
+                        setIsSubmitPending(true);
+                        const result = await fetch('http://localhost:5173/api/order', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                name,
+                                phone,
+                                email,
+                                address,
+                                preferredCommunication,
+                                receptionMethod,
+                                selectedFlavors
+                            })
+                        })
+                        setIsSubmitPending(false);
+                        console.log('result ', result);
+                        setCurrentPage('confirmation')
+                    }}
+                    className="grow-1"
+                    disabled={isSubmitPending}
+                >
+                    {isSubmitPending && <Spinner data-icon="inline-start"/>}
+                    Place order
+                </Button>
             </div>
-            
+            </>
+        }
+        {
+            currentPage === 'confirmation' && <div className="flex flex-col gap-4">
+                <div className="text-xl">Thanks for your order!</div>
+                <div className="text-m">
+                    We'll be in touch in the next 24 hours.
+                </div>
+                <OrderSummary
+                    name={name}
+                    phone={phone}
+                    email={email}
+                    address={address}
+                    preferredCommunication={preferredCommunication}
+                    receptionMethod={receptionMethod}
+                    selectedFlavors={selectedFlavors}
+                />
             </div>
         }
     </>

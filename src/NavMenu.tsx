@@ -34,7 +34,7 @@ function NavMenu ({
                 </NavLink></DrawerClose>
                 <DrawerClose asChild><NavLink
                     className="text-foreground"
-                    to='https://docs.google.com/forms/d/e/1FAIpQLSc1UxkOCuoO4MHePwFzuCwhVdT1V5Szq5xPR1Xr6-swkGyAuA/viewform'
+                    to='/order'
                 >
                     Order Jams
                 </NavLink></DrawerClose>
