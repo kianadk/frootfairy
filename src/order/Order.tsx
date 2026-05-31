@@ -257,7 +257,7 @@ function Order() {
                 <Button
                     onClick={async () => {
                         setIsSubmitPending(true);
-                        const result = await fetch('http://localhost:5173/api/order', {
+                        const result = await fetch('/api/order', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
