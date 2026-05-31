@@ -19,10 +19,12 @@ import { Textarea } from "../components/ui/textarea";
 import OrderSummary from "./OrderSummary";
 import { Spinner } from "@/components/ui/spinner";
 
-type Flavor = 'apricot' | 'strawberry';
+type Flavor = 'apricot' | 'strawberry' | 'cherry' | 'cherry jalapeño';
 const FLAVOR_STOCK: Record<Flavor, number> = {
     apricot: 6,
-    strawberry: 6
+    strawberry: 6,
+    cherry: 6,
+    ['cherry jalapeño']: 6
 } as const;
 const FLAVOR_OPTIONS = Object.keys(FLAVOR_STOCK) as (Flavor)[];
 type PAGE_NAMES = 'flavors' | 'quantities' | 'reception' | 'contact' | 'review' | 'confirmation';
