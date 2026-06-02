@@ -26,18 +26,30 @@ function NavMenu ({
           </DrawerTrigger>
           <DrawerContent  className="flex flex-col gap-16 bg-background text-2xl p-8">
                 <div className="flex flex-col gap-4">
-                    <DrawerClose asChild><NavLink
-                    className="text-foreground"
-                    to="/"
-                >
-                    Home
-                </NavLink></DrawerClose>
-                <DrawerClose asChild><NavLink
-                    className="text-foreground"
-                    to='/order'
-                >
-                    Order Jams
-                </NavLink></DrawerClose>
+                    <DrawerClose asChild>
+                        <NavLink
+                            className="text-foreground"
+                            to="/"
+                        >
+                            Home
+                        </NavLink>
+                    </DrawerClose>
+                    <DrawerClose asChild>
+                        <NavLink
+                            className="text-foreground"
+                            to="/about"
+                        >
+                            About
+                        </NavLink>
+                    </DrawerClose>
+                    <DrawerClose asChild>
+                        <NavLink
+                            className="text-foreground"
+                            to='/order'
+                        >
+                            Order Jams
+                        </NavLink>
+                    </DrawerClose>
                 </div>
           </DrawerContent>
         </Drawer>
