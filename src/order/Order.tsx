@@ -105,7 +105,7 @@ function Order() {
                 How many jars would you like?
             </FieldLegend>
             <FieldDescription>
-                Each jar is 8oz and costs $9-19 sliding scale. Learn more about pricing <Link to='/about#pricing'>here</Link>.
+                Each jar is 8oz and costs $9-19 sliding scale. Learn more about pricing <Link target="_blank" to='/about#pricing'>here</Link>.
             </FieldDescription>
             <FieldGroup className="gap-6">
                 {FLAVOR_OPTIONS.map((flavor) =>
