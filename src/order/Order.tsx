@@ -18,6 +18,7 @@ import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
 import OrderSummary from "./OrderSummary";
 import { Spinner } from "@/components/ui/spinner";
+import { Link } from "react-router-dom";
 
 type Flavor = 'apricot' | 'strawberry' | 'cherry' | 'cherry jalapeño';
 const FLAVOR_STOCK: Record<Flavor, number> = {
@@ -59,7 +60,7 @@ function Order() {
     const upperJamCost = prices.reduce((acc: number, [lower, upper]) => { return acc + upper; }, 0)
     const receptionCost = receptionMethod === 'shipping' ? 10 : receptionMethod === 'delivery' ? 5 : 0;
 
-    return <> 
+    return <div className="flex flex-col gap-4 py-12 mx-12"> 
         {currentPage === 'flavors' && <FieldSet>
         <FieldLegend variant="label">
             What flavors would you like to order?
@@ -104,7 +105,7 @@ function Order() {
                 How many jars would you like?
             </FieldLegend>
             <FieldDescription>
-                Each jar is 8oz and costs $9-19 sliding scale.
+                Each jar is 8oz and costs $9-19 sliding scale. Learn more about pricing <Link target="_blank" to='/about#pricing'>here</Link>.
             </FieldDescription>
             <FieldGroup className="gap-6">
                 {FLAVOR_OPTIONS.map((flavor) =>
@@ -244,7 +245,7 @@ function Order() {
         {
             currentPage === 'review' && <>
             <div className="text-xl">Review your order</div>
-            <div className="text-m px-8">Your order will be submitted for review. We will be in touch to confirm and collect payment.</div>
+            <div className="text-m">Your order will be submitted for review. We will be in touch to confirm and collect payment.</div>
             <OrderSummary
                 name={name}
                 phone={phone}
@@ -254,6 +255,7 @@ function Order() {
                 receptionMethod={receptionMethod}
                 selectedFlavors={selectedFlavors}
             />
+            <div className="text-m">Pay what you want within the sliding scale range. <Link target="_blank" className='underline' to='/about#pricing'>Learn more</Link></div>
             <div className="flex flex-row gap-2">
                 <Button onClick={() => setCurrentPage('contact')} className="grow-1">Back</Button>
                 <Button
@@ -304,7 +306,7 @@ function Order() {
                 />
             </div>
         }
-    </>
+    </div>
 }
 
 export default Order;
