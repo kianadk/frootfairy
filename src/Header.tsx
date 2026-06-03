@@ -8,8 +8,8 @@ function Header () {
     return <div className="flex items-center text-xl text-foreground w-full text-center relative">
         <NavMenu
             drawerTriggerElement={
-                <Button variant="ghost" size='icon' className="px-14 absolute">
-                    <MenuIcon className="size-12 mx-8"/>
+                <Button variant="ghost" size='icon' className="px-8 md:px-14 absolute">
+                    <MenuIcon className="size-8 md:size-12 mx-8"/>
                 </Button>
             }
         

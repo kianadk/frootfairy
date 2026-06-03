@@ -59,7 +59,7 @@ function Order() {
     const upperJamCost = prices.reduce((acc: number, [lower, upper]) => { return acc + upper; }, 0)
     const receptionCost = receptionMethod === 'shipping' ? 10 : receptionMethod === 'delivery' ? 5 : 0;
 
-    return <div className="flex flex-col gap-4 py-12 mx-12"> 
+    return <div className="w-5/6 md:w-2/3 flex flex-col gap-4 py-12 mx-2 lg:mx-12"> 
         {
             currentPage === 'flavors' &&
             <Flavors

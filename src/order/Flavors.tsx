@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Field, FieldDescription, FieldGroup, FieldLabel, FieldLegend, FieldSet } from "@/components/ui/field";
+import flavorPics from "./flavorPics";
 
 type Flavor = 'apricot' | 'strawberry' | 'cherry' | 'cherry jalapeño';
 const FLAVOR_STOCK: Record<Flavor, number> = {
@@ -36,27 +37,36 @@ function Flavors({
         <FieldDescription>
             Choose one or more
         </FieldDescription>
-        <FieldGroup className="gap-3">
+        <FieldGroup className="gap-3 w-full flex-wrap flex-row justify-between">
             {FLAVOR_OPTIONS.map((flavor) => {
-                return <Field orientation="horizontal" key={`${flavor}-checkbox`}>
-            <Checkbox
-                id={`${flavor}-checkbox`}
-                name={`${flavor}-checkbox`}
-                checked={!!selectedFlavors[flavor]}
-                onCheckedChange={(checked) => {
-                    const newSelection = {
-                        ...selectedFlavors,
-                        [flavor]: checked ? 1 : 0
-                    }
-                    setSelectedFlavors(newSelection);
-                }}
-            />
-            <FieldLabel
-                htmlFor={`${flavor}-checkbox`}
-                className="font-normal"
-            >
-                {flavor}
-            </FieldLabel>
+                return <Field className="w-[47%] md:w-[30%]" orientation="vertical" key={`${flavor}-checkbox`}>
+                    <div>
+                        <img
+                            alt={`${flavor} jam`}
+                            src={flavorPics[flavor]}
+                            className='object-cover rounded-lg'
+                        />
+                        <div className="flex flex-row gap-2 items-center my-1 cursor-pointer">
+                           <Checkbox
+                                id={`${flavor}-checkbox`}
+                                name={`${flavor}-checkbox`}
+                                checked={!!selectedFlavors[flavor]}
+                                onCheckedChange={(checked) => {
+                                    const newSelection = {
+                                        ...selectedFlavors,
+                                        [flavor]: checked ? 1 : 0
+                                    }
+                                    setSelectedFlavors(newSelection);
+                                }}
+                            />
+                            <FieldLabel
+                                htmlFor={`${flavor}-checkbox`}
+                                className="font-normal"
+                            >
+                                {flavor}
+                            </FieldLabel> 
+                        </div>  
+                    </div>
             </Field>
             })}
         </FieldGroup>
