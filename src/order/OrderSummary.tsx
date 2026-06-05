@@ -1,10 +1,6 @@
 import * as _ from "lodash";
+import { Flavor } from "@/inventory";
 
-type Flavor = 'apricot' | 'strawberry';
-const FLAVOR_STOCK: Record<Flavor, number> = {
-    apricot: 3,
-    strawberry: 14
-} as const;
 
 type OrderSummaryProps = {
     name: string,

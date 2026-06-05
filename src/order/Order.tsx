@@ -19,12 +19,12 @@ import { Textarea } from "../components/ui/textarea";
 import OrderSummary from "./OrderSummary";
 import { Spinner } from "@/components/ui/spinner";
 import { Link } from "react-router-dom";
+import { Flavor } from "@/inventory";
 
-type Flavor = 'apricot' | 'strawberry' | 'cherry' | 'cherry jalapeño';
 const FLAVOR_STOCK: Record<Flavor, number> = {
     apricot: 6,
     strawberry: 6,
-    cherry: 6,
+    cherry: 1,
     ['cherry jalapeño']: 6
 } as const;
 const FLAVOR_OPTIONS = Object.keys(FLAVOR_STOCK) as (Flavor)[];
