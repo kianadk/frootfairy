@@ -24,7 +24,7 @@ import { Flavor } from "@/inventory";
 const FLAVOR_STOCK: Record<Flavor, number> = {
     apricot: 6,
     strawberry: 6,
-    cherry: 1,
+    cherry: 0,
     ['cherry jalapeño']: 6
 } as const;
 const FLAVOR_OPTIONS = Object.keys(FLAVOR_STOCK) as (Flavor)[];
@@ -69,7 +69,9 @@ function Order() {
             Choose one or more
         </FieldDescription>
         <FieldGroup className="gap-3">
-            {FLAVOR_OPTIONS.map((flavor) => {
+            {Object.entries(FLAVOR_STOCK).filter(([_, quantity]) => {
+                return !!quantity
+            }).map(([flavor]) => {
                 return <Field orientation="horizontal" key={`${flavor}-checkbox`}>
             <Checkbox
                 id={`${flavor}-checkbox`}
