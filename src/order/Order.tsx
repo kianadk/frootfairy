@@ -69,7 +69,7 @@ function Order() {
             Choose one or more
         </FieldDescription>
         <FieldGroup className="gap-3">
-            {Object.entries(FLAVOR_STOCK).filter(([_, quantity]) => {
+            {(Object.entries(FLAVOR_STOCK) as [Flavor, Number][]).filter(([_, quantity]) => {
                 return !!quantity
             }).map(([flavor]) => {
                 return <Field orientation="horizontal" key={`${flavor}-checkbox`}>
