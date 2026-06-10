@@ -7,7 +7,7 @@ import { Flavor } from "@/inventory";
 const FLAVOR_STOCK: Record<Flavor, number> = {
     apricot: 6,
     strawberry: 6,
-    cherry: 6,
+    cherry: 0,
     ['cherry jalapeño']: 6
 } as const;
 const FLAVOR_OPTIONS = Object.keys(FLAVOR_STOCK) as (Flavor)[];
@@ -46,7 +46,7 @@ function Flavors({
                         <img
                             alt={`${flavor} jam`}
                             src={flavorPics[flavor]}
-                            className='object-cover rounded-lg'
+                            className='object-cover rounded-lg w-[180px] h-[180px]'
                         />
                         <div className="flex flex-row gap-2 items-center my-1 cursor-pointer">
                            <Checkbox
