@@ -30,6 +30,7 @@ const FLAVOR_STOCK: Record<Flavor, number> = {
 } as const;
 const FLAVOR_OPTIONS = Object.keys(FLAVOR_STOCK) as (Flavor)[];
 type PAGE_NAMES = 'flavors' | 'quantities' | 'reception' | 'contact' | 'review' | 'confirmation';
+type ReceptionMethod = 'pickup' | 'shipping' | 'delivery' | '';
 
 function Order() {
     const [currentPage, setCurrentPage] = useState<PAGE_NAMES>('flavors')
@@ -39,7 +40,7 @@ function Order() {
             [option]: 0
         }
     }, {} as Record<Flavor, number>));
-    const [receptionMethod, setReceptionMethod] = useState('');
+    const [receptionMethod, setReceptionMethod] = useState<ReceptionMethod>('');
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
@@ -47,8 +48,8 @@ function Order() {
     const [preferredCommunication, setPreferredCommunication] = useState('');
     const [isSubmitPending, setIsSubmitPending] = useState(false);
 
-    
-    const isContactFormComplete = !!name && !!phone && !!email && !!address && !!preferredCommunication;
+    const isAddressRequired = receptionMethod !== 'pickup'
+    const isContactFormComplete = !!name && !!phone && !!email && (!isAddressRequired || !!address) && !!preferredCommunication;
 
     const prices = Object.entries(selectedFlavors)
         .filter(([_, quantity]) => !!quantity)
@@ -123,7 +124,11 @@ function Order() {
                 <FieldLegend variant="label">
                     How would you like to receive your order?
                 </FieldLegend>
-                <RadioGroup className="gap-3" value={receptionMethod} onValueChange={setReceptionMethod}>
+                <RadioGroup
+                    className="gap-3"
+                    value={receptionMethod}
+                    onValueChange={(rm: ReceptionMethod) => setReceptionMethod(rm)}
+                >
                     <div className="flex flex-row gap-3">
                         <RadioGroupItem value="pickup"/>
                         <FieldContent>
@@ -178,10 +183,10 @@ function Order() {
                     <Label>Email</Label>
                     <Input value={email} onChange={(e) => {setEmail(e.target.value)}}/>
                  </Field>
-                 <Field>
+                 {isAddressRequired && <Field>
                     <Label>Address</Label>
                     <Textarea value={address} onChange={(e) => {setAddress(e.target.value)}}/>
-                 </Field>
+                 </Field>}
                  <FieldSet>
                     <FieldLegend variant="label">
                         What is your preferred contact method?
