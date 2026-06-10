@@ -1,7 +1,7 @@
 import plumJam from '../assets/plumJam.jpg';
 import cherryJam from '../assets/cherryJam.png';
-import strawberryJam from '../assets/strawberryJam.png';
-import apricotJam from '../assets/apricotJam.png';
+import strawberryJam from '../assets/strawberryJam.jpg';
+import apricotJam from '../assets/apricotJam.jpg';
 import cherryJalapenoJam from '../assets/cherryJalapenoJam.jpg'
 import { Flavor } from '@/inventory';
 
