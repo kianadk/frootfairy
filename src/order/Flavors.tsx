@@ -46,7 +46,7 @@ function Flavors({
                         <img
                             alt={`${flavor} jam`}
                             src={flavorPics[flavor]}
-                            className='object-cover rounded-lg w-[180px] h-[180px]'
+                            className='object-cover rounded-lg'
                         />
                         <div className="flex flex-row gap-2 items-center my-1 cursor-pointer">
                            <Checkbox
