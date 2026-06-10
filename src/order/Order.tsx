@@ -20,6 +20,7 @@ import OrderSummary from "./OrderSummary";
 import { Spinner } from "@/components/ui/spinner";
 import { Link } from "react-router-dom";
 import { Flavor } from "@/inventory";
+import Flavors from "./Flavors";
 
 const FLAVOR_STOCK: Record<Flavor, number> = {
     apricot: 6,
@@ -46,9 +47,7 @@ function Order() {
     const [preferredCommunication, setPreferredCommunication] = useState('');
     const [isSubmitPending, setIsSubmitPending] = useState(false);
 
-    const numFlavors = FLAVOR_OPTIONS.reduce((acc, flavor) => {
-        return acc + selectedFlavors[flavor]
-    }, 0)
+    
     const isContactFormComplete = !!name && !!phone && !!email && !!address && !!preferredCommunication;
 
     const prices = Object.entries(selectedFlavors)
@@ -60,47 +59,15 @@ function Order() {
     const upperJamCost = prices.reduce((acc: number, [lower, upper]) => { return acc + upper; }, 0)
     const receptionCost = receptionMethod === 'shipping' ? 10 : receptionMethod === 'delivery' ? 5 : 0;
 
-    return <div className="flex flex-col gap-4 py-12 mx-12"> 
-        {currentPage === 'flavors' && <FieldSet>
-        <FieldLegend variant="label">
-            What flavors would you like to order?
-        </FieldLegend>
-        <FieldDescription>
-            Choose one or more
-        </FieldDescription>
-        <FieldGroup className="gap-3">
-            {(Object.entries(FLAVOR_STOCK) as [Flavor, Number][]).filter(([_, quantity]) => {
-                return !!quantity
-            }).map(([flavor]) => {
-                return <Field orientation="horizontal" key={`${flavor}-checkbox`}>
-            <Checkbox
-                id={`${flavor}-checkbox`}
-                name={`${flavor}-checkbox`}
-                checked={!!selectedFlavors[flavor]}
-                onCheckedChange={(checked) => {
-                    const newSelection = {
-                        ...selectedFlavors,
-                        [flavor]: checked ? 1 : 0
-                    }
-                    setSelectedFlavors(newSelection);
-                }}
+    return <div className="w-5/6 md:w-2/3 flex flex-col gap-4 py-12 mx-2 lg:mx-12"> 
+        {
+            currentPage === 'flavors' &&
+            <Flavors
+                selectedFlavors={selectedFlavors}
+                setSelectedFlavors={setSelectedFlavors}
+                setCurrentPage={setCurrentPage}
             />
-            <FieldLabel
-                htmlFor={`${flavor}-checkbox`}
-                className="font-normal"
-            >
-                {flavor}
-            </FieldLabel>
-            </Field>
-            })}
-        </FieldGroup>
-        <Button
-            disabled={!numFlavors}
-            onClick={() => setCurrentPage('quantities')}
-        >
-            Next
-        </Button>
-        </FieldSet>}
+        }
 
         {currentPage === 'quantities' && <FieldSet>
             <FieldLegend variant="label">
