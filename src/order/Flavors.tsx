@@ -2,8 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Field, FieldDescription, FieldGroup, FieldLabel, FieldLegend, FieldSet } from "@/components/ui/field";
 import flavorPics from "./flavorPics";
+import { Flavor } from "@/inventory";
 
-type Flavor = 'apricot' | 'strawberry' | 'cherry' | 'cherry jalapeño';
 const FLAVOR_STOCK: Record<Flavor, number> = {
     apricot: 6,
     strawberry: 6,
@@ -38,7 +38,9 @@ function Flavors({
             Choose one or more
         </FieldDescription>
         <FieldGroup className="gap-3 w-full flex-wrap flex-row justify-between">
-            {FLAVOR_OPTIONS.map((flavor) => {
+            {(Object.entries(FLAVOR_STOCK) as [Flavor, Number][]).filter(([_, quantity]) => {
+                return !!quantity
+            }).map(([flavor]) => {
                 return <Field className="w-[47%] md:w-[30%]" orientation="vertical" key={`${flavor}-checkbox`}>
                     <div>
                         <img

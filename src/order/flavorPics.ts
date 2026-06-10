@@ -1,8 +1,11 @@
 import plumJam from '../assets/plumJam.jpg';
+import { Flavor } from '@/inventory';
 
-export default {
+const flavorPics: Record<Flavor, string> = {
     'apricot': plumJam,
     'strawberry': plumJam,
     'cherry': plumJam,
     'cherry jalapeño': plumJam
 };
+
+export default flavorPics;
