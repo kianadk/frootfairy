@@ -1,4 +1,3 @@
-import { Checkbox } from "@/components/ui/checkbox"
 import {
   Field,
   FieldContent,
@@ -19,21 +18,12 @@ import { Textarea } from "../components/ui/textarea";
 import OrderSummary from "./OrderSummary";
 import { Spinner } from "@/components/ui/spinner";
 import { Link } from "react-router-dom";
-import { Flavor } from "@/inventory";
+import { Flavor, FLAVOR_OPTIONS, FLAVOR_STOCK } from "@/inventory";
+import { PAGE_NAME, ReceptionMethod } from "./consts";
 import Flavors from "./Flavors";
 
-const FLAVOR_STOCK: Record<Flavor, number> = {
-    apricot: 6,
-    strawberry: 6,
-    cherry: 0,
-    ['cherry jalapeño']: 6
-} as const;
-const FLAVOR_OPTIONS = Object.keys(FLAVOR_STOCK) as (Flavor)[];
-type PAGE_NAMES = 'flavors' | 'quantities' | 'reception' | 'contact' | 'review' | 'confirmation';
-type ReceptionMethod = 'pickup' | 'shipping' | 'delivery' | '';
-
 function Order() {
-    const [currentPage, setCurrentPage] = useState<PAGE_NAMES>('flavors')
+    const [currentPage, setCurrentPage] = useState<PAGE_NAME>('flavors')
     const [selectedFlavors, setSelectedFlavors] = useState<Record<Flavor, number>>(FLAVOR_OPTIONS.reduce((acc, option) => {
         return {
             ...acc,

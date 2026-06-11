@@ -1,25 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Field, FieldDescription, FieldGroup, FieldLabel, FieldLegend, FieldSet } from "@/components/ui/field";
-import flavorPics from "./flavorPics";
-import { Flavor } from "@/inventory";
-
-const FLAVOR_STOCK: Record<Flavor, number> = {
-    apricot: 6,
-    strawberry: 6,
-    cherry: 0,
-    ['cherry jalapeño']: 6
-} as const;
-const FLAVOR_OPTIONS = Object.keys(FLAVOR_STOCK) as (Flavor)[];
-
-type PAGE_NAME = 'flavors' | 'quantities' | 'reception' | 'contact' | 'review' | 'confirmation';
+import { flavorPics, PAGE_NAME } from "./consts";
+import { Flavor, FLAVOR_OPTIONS, FLAVOR_STOCK } from "@/inventory";
 
 type FlavorsProps = {
     selectedFlavors: Record<Flavor, number>;
     setSelectedFlavors: (s: Record<Flavor, number>) => void;
     setCurrentPage: (p: PAGE_NAME) => void;
 }
-
 
 function Flavors({
     selectedFlavors,

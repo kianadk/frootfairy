@@ -5,11 +5,12 @@ import apricotJam from '../assets/apricotJam.jpg';
 import cherryJalapenoJam from '../assets/cherryJalapenoJam.jpg'
 import { Flavor } from '@/inventory';
 
-const flavorPics: Record<Flavor, string> = {
+export const flavorPics: Record<Flavor, string> = {
     'apricot': apricotJam,
     'strawberry': strawberryJam,
     'cherry': cherryJam,
     'cherry jalapeño': cherryJalapenoJam
 };
 
-export default flavorPics;
+export type PAGE_NAME = 'flavors' | 'quantities' | 'reception' | 'contact' | 'review' | 'confirmation';
+export type ReceptionMethod = 'pickup' | 'shipping' | 'delivery' | '';
