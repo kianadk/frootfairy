@@ -31,7 +31,7 @@ function Flavors({
     }, 0)
 
     return <FieldSet>
-        <FieldLegend variant="label">
+        <FieldLegend variant="legend">
             What flavors would you like to order?
         </FieldLegend>
         <FieldDescription>

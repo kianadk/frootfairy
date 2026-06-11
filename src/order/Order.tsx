@@ -51,15 +51,6 @@ function Order() {
     const isAddressRequired = receptionMethod !== 'pickup'
     const isContactFormComplete = !!name && !!phone && !!email && (!isAddressRequired || !!address) && !!preferredCommunication;
 
-    const prices = Object.entries(selectedFlavors)
-        .filter(([_, quantity]) => !!quantity)
-        .map(([flavor, quantity]) => {
-            return [quantity * 9, quantity * 19];
-         });
-    const lowerJamCost = prices.reduce((acc: number, [lower, upper]) => { return acc + lower; }, 0);
-    const upperJamCost = prices.reduce((acc: number, [lower, upper]) => { return acc + upper; }, 0)
-    const receptionCost = receptionMethod === 'shipping' ? 10 : receptionMethod === 'delivery' ? 5 : 0;
-
     return <div className="w-5/6 md:w-2/3 flex flex-col gap-4 py-12 mx-2 lg:mx-12"> 
         {
             currentPage === 'flavors' &&
