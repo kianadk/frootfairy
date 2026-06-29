@@ -34,8 +34,8 @@ function Home () {
             >
                 Currently available flavors (June 2026)
                 <ul className='text-lg my-4'>
-                    <li className='line-through'>cherry</li>
-                    <li>cherry jalapeño <Badge>✨new✨</Badge></li>
+                    <li>cherry</li>
+                    <li>cherry jalapeño</li>
                     <li>strawberry</li>
                     <li>apricot</li>
                 </ul>

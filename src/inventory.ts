@@ -6,7 +6,7 @@ export type Flavor = 'apricot' |
 export const FLAVOR_STOCK: Record<Flavor, number> = {
     apricot: 6,
     strawberry: 6,
-    cherry: 0,
+    cherry: 4,
     ['cherry jalapeño']: 6
 } as const;
 export const FLAVOR_OPTIONS = Object.keys(FLAVOR_STOCK) as (Flavor)[];
