@@ -7,7 +7,7 @@ import {
   FieldLegend,
   FieldSet,
 } from "@/components/ui/field"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../components/ui/button";
 import { SelectContent, Select, SelectTrigger, SelectItem, SelectValue, SelectGroup } from "../components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
@@ -22,7 +22,22 @@ import { Flavor, FLAVOR_OPTIONS, FLAVOR_STOCK } from "@/inventory";
 import { PAGE_NAME, ReceptionMethod } from "./consts";
 import Flavors from "./Flavors";
 
+type inventory = {
+    name: string,
+    available_count: number
+}[]
+
 function Order() {
+    const [inventory, setInventory] = useState<inventory>();
+
+    useEffect(() => {
+        fetch('/api/inventory')
+            .then(resp => resp.json())
+            .then((result) => {
+                setInventory(result);
+            });
+    }, [])
+
     const [currentPage, setCurrentPage] = useState<PAGE_NAME>('flavors')
     const [selectedFlavors, setSelectedFlavors] = useState<Record<Flavor, number>>(FLAVOR_OPTIONS.reduce((acc, option) => {
         return {
@@ -41,7 +56,8 @@ function Order() {
     const isAddressRequired = receptionMethod !== 'pickup'
     const isContactFormComplete = !!name && !!phone && !!email && (!isAddressRequired || !!address) && !!preferredCommunication;
 
-    return <div className="w-5/6 md:w-2/3 flex flex-col gap-4 py-12 mx-2 lg:mx-12"> 
+    return <div className="w-5/6 md:w-2/3 flex flex-col gap-4 py-12 mx-2 lg:mx-12">
+        {JSON.stringify(inventory)}
         {
             currentPage === 'flavors' &&
             <Flavors
