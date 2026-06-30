@@ -1,10 +1,13 @@
 import { put } from '@vercel/blob';
 import { Resend } from 'resend';
 import { Pool } from 'pg';
+import { attachDatabasePool } from "@vercel/functions";
 
 const pool = new Pool({
   connectionString: process.env.INVENTORY_DATABASE_URL,
 });
+
+attachDatabasePool(pool);
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -42,7 +45,6 @@ export async function POST(req: Request) {
           console.error('Connection failed.', err);
       } finally {
           client.release();
-          pool.end();
       }
 
       const { data, error } = await resend.batch.send([{
