@@ -2,21 +2,25 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Field, FieldDescription, FieldGroup, FieldLabel, FieldLegend, FieldSet } from "@/components/ui/field";
 import { flavorPics, PAGE_NAME } from "./consts";
-import { Flavor, FLAVOR_OPTIONS, FLAVOR_STOCK } from "@/inventory";
+import { Flavor, Inventory } from "@/inventory";
+import { Spinner } from "@/components/ui/spinner";
 
 type FlavorsProps = {
     selectedFlavors: Record<Flavor, number>;
     setSelectedFlavors: (s: Record<Flavor, number>) => void;
     setCurrentPage: (p: PAGE_NAME) => void;
+    inventory: Inventory
 }
 
 function Flavors({
     selectedFlavors,
     setSelectedFlavors,
-    setCurrentPage
+    setCurrentPage,
+    inventory,
 }: FlavorsProps) {
-    const numFlavors = FLAVOR_OPTIONS.reduce((acc, flavor) => {
-        return acc + selectedFlavors[flavor]
+
+    const numFlavors = inventory.reduce((acc, flavor) => {
+        return acc + selectedFlavors[flavor.name]
     }, 0)
 
     return <FieldSet>
@@ -27,9 +31,9 @@ function Flavors({
             Choose one or more
         </FieldDescription>
         <FieldGroup className="gap-3 w-full flex-wrap flex-row justify-between">
-            {(Object.entries(FLAVOR_STOCK) as [Flavor, Number][]).filter(([_, quantity]) => {
-                return !!quantity
-            }).map(([flavor]) => {
+            {inventory.filter((item) => {
+                return !!item.available_count
+            }).map(({name: flavor}) => {
                 return <Field className="w-[47%] md:w-[30%]" orientation="vertical" key={`${flavor}-checkbox`}>
                     <div>
                         <img

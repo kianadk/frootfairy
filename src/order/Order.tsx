@@ -18,33 +18,31 @@ import { Textarea } from "../components/ui/textarea";
 import OrderSummary from "./OrderSummary";
 import { Spinner } from "@/components/ui/spinner";
 import { Link } from "react-router-dom";
-import { Flavor, FLAVOR_OPTIONS, FLAVOR_STOCK } from "@/inventory";
+import { Flavor, Inventory } from "@/inventory";
 import { PAGE_NAME, ReceptionMethod } from "./consts";
 import Flavors from "./Flavors";
 
-type inventory = {
-    name: string,
-    available_count: number
-}[]
+
 
 function Order() {
-    const [inventory, setInventory] = useState<inventory>();
+    const [inventory, setInventory] = useState<Inventory>();
 
     useEffect(() => {
         fetch('/api/inventory')
             .then(resp => resp.json())
-            .then((result) => {
+            .then((result: Inventory) => {
                 setInventory(result);
+                setSelectedFlavors(result.reduce((acc, option) => {
+                    return {
+                        ...acc,
+                        [option.name]: 0
+                    }
+                }, {} as Record<Flavor, number>))
             });
     }, [])
 
     const [currentPage, setCurrentPage] = useState<PAGE_NAME>('flavors')
-    const [selectedFlavors, setSelectedFlavors] = useState<Record<Flavor, number>>(FLAVOR_OPTIONS.reduce((acc, option) => {
-        return {
-            ...acc,
-            [option]: 0
-        }
-    }, {} as Record<Flavor, number>));
+    const [selectedFlavors, setSelectedFlavors] = useState<Record<Flavor, number>>();
     const [receptionMethod, setReceptionMethod] = useState<ReceptionMethod>('');
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
@@ -56,11 +54,15 @@ function Order() {
     const isAddressRequired = receptionMethod !== 'pickup'
     const isContactFormComplete = !!name && !!phone && !!email && (!isAddressRequired || !!address) && !!preferredCommunication;
 
+    if (!inventory || !selectedFlavors) {
+        return <Spinner />;
+    }
+
     return <div className="w-5/6 md:w-2/3 flex flex-col gap-4 py-12 mx-2 lg:mx-12">
-        {JSON.stringify(inventory)}
         {
             currentPage === 'flavors' &&
             <Flavors
+                inventory={inventory}
                 selectedFlavors={selectedFlavors}
                 setSelectedFlavors={setSelectedFlavors}
                 setCurrentPage={setCurrentPage}
@@ -75,8 +77,9 @@ function Order() {
                 Each jar is 8oz and costs $9-19 sliding scale. Learn more about pricing <Link target="_blank" to='/about#pricing'>here</Link>.
             </FieldDescription>
             <FieldGroup className="gap-6">
-                {FLAVOR_OPTIONS.map((flavor) =>
-                    selectedFlavors[flavor] ? <Field orientation="vertical" key={`${flavor}-select`}>
+                {inventory.map((inventoryItem) => {
+                    const { name: flavor, available_count } = inventoryItem;
+                    return selectedFlavors[flavor] ? <Field orientation="vertical" key={`${flavor}-select`}>
                         <FieldLabel
                             htmlFor={`${flavor}-checkbox`}
                         >
@@ -95,7 +98,7 @@ function Order() {
                         >
                             <SelectContent className="">
                                 <SelectGroup>
-                                    {_.range(1, FLAVOR_STOCK[flavor] + 1).map((val) => 
+                                    {_.range(1, available_count + 1).map((val) => 
                                     <SelectItem key={`select-${flavor}-${val}`} value={val.toString()}>
                                         {val}
                                     </SelectItem>)}
@@ -104,7 +107,7 @@ function Order() {
                             <SelectTrigger className=""><SelectValue placeholder="Select a quantity"/></SelectTrigger>
                         </Select>
                     </Field> : null
-                )}
+                })}
             </FieldGroup>
             <div className="flex flex-row gap-2">
                 <Button
