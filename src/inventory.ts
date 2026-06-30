@@ -1,7 +1,12 @@
 export type Flavor = 'apricot' |
     'cherry' |
     'cherry jalapeño' |
-    'strawberry'
+    'strawberry';
+
+export type Inventory = {
+    name: Flavor,
+    available_count: number
+}[]
 
 export const FLAVOR_STOCK: Record<Flavor, number> = {
     apricot: 6,

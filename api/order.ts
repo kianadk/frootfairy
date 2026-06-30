@@ -1,5 +1,13 @@
 import { put } from '@vercel/blob';
 import { Resend } from 'resend';
+import { Pool } from 'pg';
+import { attachDatabasePool } from "@vercel/functions";
+
+const pool = new Pool({
+  connectionString: process.env.INVENTORY_DATABASE_URL,
+});
+
+attachDatabasePool(pool);
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -22,6 +30,23 @@ export async function POST(req: Request) {
         JSON.stringify(resBody), 
         { access: 'private', addRandomSuffix: true, contentType: 'application/json', token: process.env.BLOB_READ_WRITE_TOKEN }
       );
+
+      const client = await pool.connect();
+      try {
+          const filteredFlavors = Object.entries(resBody.selectedFlavors).filter(([_, quantity]) => !!quantity);
+          const caseString = filteredFlavors.map(([flavor, quantity]) => {
+            return `WHEN '${flavor}' THEN available_count - ${quantity}`
+          }).join(' ');
+          const flavorList = filteredFlavors.map(([flavor]) => `'${flavor}'`).join(',')
+          await client.query(
+            `UPDATE jams SET available_count = CASE name ${caseString} END WHERE name in (${flavorList})`
+          );
+      } catch (err) {
+          console.error('Connection failed.', err);
+      } finally {
+          client.release();
+      }
+
       const { data, error } = await resend.batch.send([{
         from: 'kiana joon <kiana.joon@frootfairy.com>',
         to: [resBody.email],
