@@ -12,7 +12,6 @@ export async function GET() {
     const client = await pool.connect();
     try {
         const { rows } = await client.query('SELECT * FROM jams WHERE should_display=TRUE;');
-        client.release();
         return new Response(JSON.stringify(rows));
     } catch (err) {
         console.error('Connection failed.', err);
