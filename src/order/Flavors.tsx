@@ -30,7 +30,7 @@ function Flavors({
         <FieldDescription>
             Choose one or more
         </FieldDescription>
-        <FieldGroup className="gap-3 w-full flex-wrap flex-row justify-between">
+        <FieldGroup className="gap-3 w-full flex-wrap flex-row">
             {inventory.filter((item) => {
                 return !!item.available_count
             }).map(({name: flavor}) => {

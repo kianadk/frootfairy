@@ -32,8 +32,9 @@ function Home () {
             <div
                 className='text-lg text-bold text-center'
             >
-                Currently available flavors (June 2026)
+                Currently available flavors (July 2026)
                 <ul className='text-lg my-4'>
+                    <li>peach <Badge>new</Badge></li>
                     <li>cherry</li>
                     <li>cherry jalapeño</li>
                     <li>strawberry</li>
