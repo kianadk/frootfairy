@@ -2,7 +2,7 @@ import { put } from '@vercel/blob';
 import { Resend } from 'resend';
 import { Pool } from 'pg';
 import { attachDatabasePool } from "@vercel/functions";
-import generateConfirmationEmail from '../utils/generateConfirmationEmail';
+import generateConfirmationEmail from './_utils/generateConfirmationEmail';
 
 const pool = new Pool({
   connectionString: process.env.INVENTORY_DATABASE_URL,
