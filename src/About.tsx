@@ -16,7 +16,7 @@ function About() {
                 If you need price accommodation outside of the suggested range, please contact me!
             </div>
             <div>
-                Some (dope) businesses that have inspired my to price my goods this way:
+                Some (dope) businesses that have inspired me to price my goods this way:
             </div>
             <ul className="list-disc list-inside underline">
                 <li><a href="https://www.yogashalawest.com/">Yoga Shala West</a></li>
