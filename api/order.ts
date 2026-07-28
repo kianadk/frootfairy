@@ -12,9 +12,9 @@ attachDatabasePool(pool);
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 function getItemizedOrder(selectedFlavors: Record<string, number>, receptionMethod: string) {
-  const filteredFlavors = Object.entries(selectedFlavors).filter(([_, quantity]) => quantity > 0);
+  const filteredFlavors = Object.entries(selectedFlavors).filter(([_, quantity]) => Number(quantity) > 0);
   const totalJars = filteredFlavors.reduce((acc, [_, quantity]) => {
-    return acc + quantity;
+    return acc + Number(quantity);
   }, 0)
   const lowerSubtotal = totalJars * 9;
   const upperSubtotal = totalJars * 19;
@@ -32,12 +32,18 @@ type OrderRequestBody = {
   name: string;
   email: string;
   receptionMethod: string;
+  preferredCommunication: string;
   selectedFlavors: Record<string, number>;
 };
 
 export async function POST(req: Request) {
     const resBody: OrderRequestBody = await req.json();
-    const { name, receptionMethod, selectedFlavors} = resBody;
+    const {
+      name,
+      receptionMethod,
+      selectedFlavors,
+      preferredCommunication
+    } = resBody;
     const itemizedOrder = getItemizedOrder(selectedFlavors, receptionMethod);
     
       const url = await put(
@@ -80,7 +86,8 @@ export async function POST(req: Request) {
           id: 'admin-order-ready',
           variables: {
             name: name,
-            itemized_order: itemizedOrder
+            itemized_order: itemizedOrder,
+            preferred_communication: preferredCommunication
           }
         }
       }]);
