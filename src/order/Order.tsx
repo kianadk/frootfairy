@@ -145,14 +145,6 @@ function Order() {
                         </FieldContent>
                         
                     </div>
-                    <div className="flex flex-row gap-3">
-                        <RadioGroupItem value="delivery"/>
-                        <FieldContent>
-                            <Label>Local delivery</Label>
-                            <FieldDescription>+$5</FieldDescription>
-                        </FieldContent>
-                        
-                    </div>
                 </RadioGroup>
                 <div className="flex flex-row gap-2">
                     <Button onClick={() => setCurrentPage('quantities')}
