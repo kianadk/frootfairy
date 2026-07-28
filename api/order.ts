@@ -20,10 +20,11 @@ function getItemizedOrder(selectedFlavors: Record<string, number>, receptionMeth
   const upperSubtotal = totalJars * 19;
   const receptionPrice = receptionMethod === 'pickup' ? 0 : 10;
   const lineItems = filteredFlavors.map(([flavor, quantity]) => {
-    return `${quantity} ${flavor} - $9-19`
+    return `${quantity} ${flavor} - $${quantity*9}-${quantity*19}`
   });
   lineItems.push(`${receptionMethod} - $${receptionPrice}`)
   lineItems.push(`total - $${lowerSubtotal+receptionPrice}-${upperSubtotal + receptionPrice}`)
+  lineItems.push(`DEBUGGING totalJars is ${totalJars}`)
   return lineItems.join('<br/>');
 }
 
