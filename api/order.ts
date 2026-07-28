@@ -24,7 +24,6 @@ function getItemizedOrder(selectedFlavors: Record<string, number>, receptionMeth
   });
   lineItems.push(`${receptionMethod} - $${receptionPrice}`)
   lineItems.push(`total - $${lowerSubtotal+receptionPrice}-${upperSubtotal + receptionPrice}`)
-  lineItems.push(`DEBUGGING totalJars is ${totalJars}`)
   return lineItems.join('<br/>');
 }
 
@@ -52,21 +51,21 @@ export async function POST(req: Request) {
         { access: 'private', addRandomSuffix: true, contentType: 'application/json', token: process.env.BLOB_READ_WRITE_TOKEN }
       );
 
-      // const client = await pool.connect();
-      // try {
-      //     const filteredFlavors = Object.entries(resBody.selectedFlavors).filter(([_, quantity]) => !!quantity);
-      //     const caseString = filteredFlavors.map(([flavor, quantity]) => {
-      //       return `WHEN '${flavor}' THEN available_count - ${quantity}`
-      //     }).join(' ');
-      //     const flavorList = filteredFlavors.map(([flavor]) => `'${flavor}'`).join(',')
-      //     await client.query(
-      //       `UPDATE jams SET available_count = CASE name ${caseString} END WHERE name in (${flavorList})`
-      //     );
-      // } catch (err) {
-      //     console.error('Connection failed.', err);
-      // } finally {
-      //     client.release();
-      // }
+      const client = await pool.connect();
+      try {
+          const filteredFlavors = Object.entries(resBody.selectedFlavors).filter(([_, quantity]) => !!quantity);
+          const caseString = filteredFlavors.map(([flavor, quantity]) => {
+            return `WHEN '${flavor}' THEN available_count - ${quantity}`
+          }).join(' ');
+          const flavorList = filteredFlavors.map(([flavor]) => `'${flavor}'`).join(',')
+          await client.query(
+            `UPDATE jams SET available_count = CASE name ${caseString} END WHERE name in (${flavorList})`
+          );
+      } catch (err) {
+          console.error('Connection failed.', err);
+      } finally {
+          client.release();
+      }
 
       const { data, error } = await resend.batch.send([{
         from: 'kiana joon <kiana.joon@frootfairy.com>',
