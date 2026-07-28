@@ -15,4 +15,4 @@ export const flavorPics: Record<Flavor, string> = {
 };
 
 export type PAGE_NAME = 'flavors' | 'quantities' | 'reception' | 'contact' | 'review' | 'confirmation';
-export type ReceptionMethod = 'pickup' | 'shipping' | 'delivery' | '';
+export type ReceptionMethod = 'pickup' | 'shipping' | '';
