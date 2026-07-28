@@ -11,22 +11,42 @@ attachDatabasePool(pool);
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-function generateConfirmationEmail(data: { name: string, selectedFlavors: Record<string, number>}) {
-  const name = data.name;
-  const selectedFlavors = data.selectedFlavors;
-  const flavorString = Object.entries(selectedFlavors).filter(([_, quantity]) => quantity > 0).reduce((accumulator, [flavor, quantity], index) => {
-    if (quantity === 0) return accumulator;
-    return accumulator + `${index > 0 ? ', ': ''}${quantity} jar${quantity > 1 ? 's' : ''} of ${flavor}`
-  }, '');
-  return `hello ${name},<br /><br /> thanks for placing a froot fairy order! we'll be reaching out to you shortly to confirm details. contact kiana.joon@frootfairy.com if you need anything in the meantime<br/><br/> your order: ${flavorString}`
+function getItemizedOrder(selectedFlavors: Record<string, number>, receptionMethod: string) {
+  const filteredFlavors = Object.entries(selectedFlavors).filter(([_, quantity]) => Number(quantity) > 0);
+  const totalJars = filteredFlavors.reduce((acc, [_, quantity]) => {
+    return acc + Number(quantity);
+  }, 0)
+  const lowerSubtotal = totalJars * 9;
+  const upperSubtotal = totalJars * 19;
+  const receptionPrice = receptionMethod === 'pickup' ? 0 : 10;
+  const lineItems = filteredFlavors.map(([flavor, quantity]) => {
+    return `${quantity} ${flavor} - $${quantity*9}-${quantity*19}`
+  });
+  lineItems.push(`${receptionMethod} - $${receptionPrice}`)
+  lineItems.push(`total - $${lowerSubtotal+receptionPrice}-${upperSubtotal + receptionPrice}`)
+  return lineItems.join('<br/>');
+}
+
+type OrderRequestBody = {
+  name: string;
+  email: string;
+  receptionMethod: string;
+  preferredCommunication: string;
+  selectedFlavors: Record<string, number>;
 };
 
 export async function POST(req: Request) {
-    const resBody = await req.json();
-    const name = resBody.name || 'order';
+    const resBody: OrderRequestBody = await req.json();
+    const {
+      name,
+      receptionMethod,
+      selectedFlavors,
+      preferredCommunication
+    } = resBody;
+    const itemizedOrder = getItemizedOrder(selectedFlavors, receptionMethod);
     
       const url = await put(
-        `orders/${name}.txt`,
+        `orders/${name || 'order'}.txt`,
         JSON.stringify(resBody), 
         { access: 'private', addRandomSuffix: true, contentType: 'application/json', token: process.env.BLOB_READ_WRITE_TOKEN }
       );
@@ -50,14 +70,25 @@ export async function POST(req: Request) {
       const { data, error } = await resend.batch.send([{
         from: 'kiana joon <kiana.joon@frootfairy.com>',
         to: [resBody.email],
-        subject: 'frooty greetings',
-        html: `<div>${generateConfirmationEmail(resBody)}</div>`,
+        template: {
+          id: 'order-ready',
+          variables: {
+            name: name,
+            itemized_order: itemizedOrder
+          }
+        },
       },
       {
         from: 'kiana joon <kiana.joon@frootfairy.com>',
         to: ['kianadkavoosi@gmail.com'],
-        subject: 'you got a froot fairy order',
-        html: `<div>Here is the order <br/> ${generateConfirmationEmail(resBody)}</div>`,
+        template: {
+          id: 'admin-order-ready',
+          variables: {
+            name: name,
+            itemized_order: itemizedOrder,
+            preferred_communication: preferredCommunication
+          }
+        }
       }]);
     
       if (error) {
