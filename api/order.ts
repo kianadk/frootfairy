@@ -24,7 +24,7 @@ function getItemizedOrder(selectedFlavors: Record<string, number>, receptionMeth
   });
   lineItems.push(`${receptionMethod} - $${receptionPrice}`)
   lineItems.push(`total - $${lowerSubtotal+receptionPrice}-${upperSubtotal + receptionPrice}`)
-  return lineItems.join('\n');
+  return lineItems.join('<br/>');
 }
 
 type OrderRequestBody = {
