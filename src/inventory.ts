@@ -2,7 +2,8 @@ export type Flavor = 'apricot' |
     'cherry' |
     'cherry jalapeño' |
     'strawberry' |
-    'peach';
+    'peach' |
+    'peach jalapeño';
 
 export type Inventory = {
     name: Flavor,
