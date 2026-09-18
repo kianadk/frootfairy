@@ -5,6 +5,7 @@ import apricotJam from '../assets/apricotJam.jpg';
 import cherryJalapenoJam from '../assets/cherryJalapenoJam.jpg'
 import peachJam from '../assets/peachJam.jpg';
 import peachJalapenoJam from '../assets/peachJalapenoJam.jpg';
+import plumJamSep26 from '../assets/plumJamSep26.jpg';
 import { Flavor } from '@/inventory';
 
 export const flavorPics: Record<Flavor, string> = {
@@ -13,7 +14,8 @@ export const flavorPics: Record<Flavor, string> = {
     'cherry': cherryJam,
     'cherry jalapeño': cherryJalapenoJam,
     'peach': peachJam,
-    'peach jalapeño': peachJalapenoJam
+    'peach jalapeño': peachJalapenoJam,
+    'plum': plumJamSep26,
 };
 
 export type PAGE_NAME = 'flavors' | 'quantities' | 'reception' | 'contact' | 'review' | 'confirmation';
